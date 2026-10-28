@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Khalili Fire</title>
+  <style>
+    * {
+      box-sizing: border-box
+    }
+
+    body {
+      margin: 0;
+      background: #060912;
+      color: #f8fafc;
+      font-family: system-ui, Arial;
+      display: grid;
+      place-items: center;
+      min-height: 100vh;
+      padding: 16px;
+      position: relative;
+      overflow: hidden
+    }
+
+    .wrap {
+      width: min(1280px, 100%);
+      position: relative
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      background: #0a1024;
+      border: 2px solid #334155;
+      border-radius: 12px;
+      image-rendering: pixelated
+    }
+
+    #menu {
+      position: absolute;
+      inset: 0;
+      border-radius: 12px;
+      display: grid;
+      place-items: center;
+      background:
+        radial-gradient(circle at 20% 18%, #fef9c355, transparent 28%),
+        linear-gradient(180deg, #050814f2, #0c1633f0 55%, #1a2744f2);
+      z-index: 5;
+      text-align: center;
+      padding: 24px
+    }
+
+    #menu.hidden {
+      display: none
+    }
+
+    #menu h1 {
+      margin: 0 0 10px;
+      font-size: clamp(42px, 8vw, 72px);
+      letter-spacing: 1px;
+      color: #f97316;
+      text-shadow: 0 0 24px #f9731666, 0 4px 0 #7c2d12;
+      font-weight: 900
+    }
+
+    #menu .sub {
+      margin: 0 0 28px;
+      color: #cbd5e1;
+      font-size: 16px;
+      max-width: 420px
+    }
+
+    #menu button {
+      background: #f97316;
+      color: #111827;
+      border: 0;
+      border-radius: 10px;
+      padding: 14px 36px;
+      font-size: 20px;
+      font-weight: 900;
+      cursor: pointer;
+      box-shadow: 0 8px 0 #9a3412;
+      transition: transform .12s ease, box-shadow .12s ease
+    }
+
+    #menu button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 0 #9a3412
+    }
+
+    #menu button:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 #9a3412
+    }
+
+    p {
+      color: #cbd5e1;
+      text-align: center;
+      font-size: 14px
+    }
+
+    .touch {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px
+    }
+
+    .touch button {
+      background: #f97316;
+      border: 0;
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-weight: 800;
+      color: #111827;
+      cursor: pointer;
+      min-width: 62px;
+      touch-action: none
+    }
+
+    @media(min-width:700px) {
+      .touch {
+        display: none
+      }
+    }
+
+    #ifood {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      width: 140px;
+      height: 140px;
+      border-radius: 14px;
+      z-index: 10;
+      overflow: hidden;
+      user-select: none;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(.55) rotate(8deg);
+      transition: opacity .12s ease, transform .18s ease, visibility 0s linear .2s
+    }
+
+    #ifood img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover
+    }
+
+    #ifood.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1.12) rotate(-4deg);
+      transition: opacity .1s ease, transform .16s cubic-bezier(.2, 1.4, .4, 1), visibility 0s;
+      animation: ifood-shake .4s ease
+    }
+
+    @keyframes ifood-shake {
+      0%, 100% { translate: 0 0 }
+      25% { translate: -5px 3px }
+      50% { translate: 5px -2px }
+      75% { translate: -4px -2px }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <canvas id="game" width="1200" height="700"></canvas>
+    <div id="menu">
+      <div>
+        <h1>Khalili Fire</h1>
+        <p class="sub">Apague o fogo, fuja do iFood e entregue a chave de fenda ao Carlão antes que ele perca a paciência.</p>
+        <button type="button" id="start-btn">Jogar</button>
+      </div>
+    </div>
+    <p>Movimento: A / D ou ← / → &nbsp; • &nbsp; Pular: W / ↑ &nbsp; • &nbsp; Extintor: Espaço &nbsp; • &nbsp; Leve a chave de fenda até o Carlão</p>
+    <div class="touch">
+      <div><button data-key="arrowleft">◀</button> <button data-key="arrowright">▶</button></div>
+      <div><button data-key="w">PULAR</button> <button data-key="space">🧯</button></div>
+    </div>
+  </div>
+
+  <div id="ifood" aria-hidden="true">
+    <img id="ifood-img" src="imagens/Image-Faca-parte-do-ifood-para-entregadores.webp" alt="iFood">
+  </div>
+
+  <script src="script.js"></script>
+</body>
+
+</html>
